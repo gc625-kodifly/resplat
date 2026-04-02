@@ -176,5 +176,3 @@ debug*
 doc/
 notebooks/
 paper.pdf
-cursor_modules_md_input_trace_review*.md
-.cursor/skills/

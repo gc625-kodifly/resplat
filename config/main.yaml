@@ -1,0 +1,119 @@
+defaults:
+  - dataset: re10k
+  - optional dataset/view_sampler_dataset_specific_config: ${dataset/view_sampler}_${dataset}
+  - model/encoder: resplat
+  - model/decoder: splatting_cuda
+  - loss: [mse]
+
+wandb:
+  project: resplat
+  entity: null
+  name: placeholder
+  mode: online
+  id: null
+
+mode: train
+
+dataset:
+  overfit_to_scene: null
+
+data_loader:
+  train:
+    num_workers: 10
+    persistent_workers: true
+    batch_size: 4
+    seed: 1234
+  test:
+    num_workers: 4
+    persistent_workers: false
+    batch_size: 1
+    seed: 2345
+  val:
+    num_workers: 1
+    persistent_workers: true
+    batch_size: 1
+    seed: 3456
+
+optimizer:
+  lr: 2.e-4
+  lr_monodepth: 2.e-6
+  lr_depth: 0.
+  warm_up_steps: 2000
+  weight_decay: 0.01
+  warm_up_ratio: 0.01
+  adamw_8bit: false
+
+checkpointing:
+  load: null
+  every_n_train_steps: 1000
+  save_top_k: 5
+  pretrained_model: null
+  pretrained_depth: null
+  no_strict_load: false
+  resume: false
+  no_resume_upsampler: false
+  resume_update_module: null
+
+train:
+  extended_visualization: false
+  print_log_every_n_steps: 100
+  eval_model_every_n_val: 2
+  eval_data_length: 999999
+  eval_deterministic: false
+  eval_time_skip_steps: 3
+  eval_save_model: true
+  intermediate_loss_weight: 0.9
+  no_viz_video: false
+  eval_depth: false
+  train_ignore_large_loss: 0.
+  no_log_projections: true
+  no_log_video: true
+  log_depth_loss: true
+  depth_smooth_loss_weight: 0.01
+  depth_smooth_loss_nonorm: false
+  loss_on_input_views: false
+  train_window_size: null
+  half_res_lpips_loss: false
+
+test:
+  output_path: outputs/test
+  compute_scores: true
+  eval_time_skip_steps: 0
+  save_image: false
+  save_video: false
+  save_gt_image: false
+  save_input_images: false
+  save_depth: false
+  save_depth_npy: false
+  save_depth_concat_img: false
+  save_gaussian: false
+  save_gaussian_npz: false
+  no_align_to_view: false
+  save_point_cloud: false
+  render_chunk_size: null
+  stablize_camera: false
+  stab_camera_kernel: 50
+  render_input_views: false
+  inference_window_size: null
+  profile_model: false
+  test_zero_order_sh_only: false
+
+seed: 111123
+
+trainer:
+  max_steps: -1
+  val_check_interval: 0.5
+  gradient_clip_val: 0.5
+  num_sanity_val_steps: 2
+  eval_index: null
+
+output_dir: outputs/tmp
+
+use_plugins: false
+
+log_slurm_id: false
+
+hydra:
+  run:
+    dir: ${output_dir}
+  output_subdir: null

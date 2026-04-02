@@ -1,0 +1,62 @@
+# @package _global_
+
+defaults:
+  - override /dataset: dl3dv
+  - override /model/encoder: resplat
+  - override /loss: [mse, lpips]
+  - override /dataset/view_sampler: boundedv2_360
+
+wandb:
+  name: dl3dv
+  tags: [dl3dv, 270x480]
+
+data_loader:
+  train:
+    batch_size: 1
+
+trainer:
+  max_steps: 300_001
+  num_nodes: 1
+
+model:
+  encoder:
+    num_depth_candidates: 128
+    shim_patch_size: 16
+    upsample_factor: 8
+    lowest_feature_resolution: 8
+
+# lpips loss
+loss:
+  lpips:
+    apply_after_step: 0
+    weight: 0.5
+    perceptual_loss: true
+
+dataset:
+  opencv_pose_format: true
+  near: 0.01
+  far: 200.
+  baseline_scale_bounds: false
+  make_baseline_1: false
+  min_views: 0
+  max_views: 0
+  highres: false
+  mix_re10k: false
+  re10k_min_view_dist: 40
+  re10k_max_view_dist: 300
+  pose_align_first_view: false
+  pose_align_middle_view: false
+  pose_align_last_view: false
+  pose_align_random_view: false
+  scale_extrinsics: 1.
+  load_remain_context: false
+  num_remain_context: 8
+  random_crop: false
+  min_size: [384,512]
+  max_size: [512,960]
+
+
+test:
+  eval_time_skip_steps: 0
+  compute_scores: true
+  dec_chunk_size: 30

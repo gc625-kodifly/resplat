@@ -1,0 +1,98 @@
+# Core settings
+name: resplat
+num_depth_candidates: 128
+
+gaussian_adapter:
+  gaussian_scale_min: 0.5
+  gaussian_scale_max: 1.
+  sh_degree: 3
+  exp_scale: false
+  softplus_scale: true
+  clamp_min_scale: 1e-6
+  scale_detach_depth: false
+  exp_scale_bias: 4.
+  no_rotate_sh: true
+  no_sh_mask: true
+  init_rotation_identity: false
+
+visualizer:
+  num_samples: 8
+  min_resolution: 256
+  export_ply: false
+
+# UniMatch / cost volume
+unimatch_weights_path: "pretrained/gmdepth-scale1-resumeflowthings-scannet-5d9d7964.pth"
+downscale_factor: 4
+shim_patch_size: 4
+
+# Multi-view stereo
+num_scales: 1
+upsample_factor: 4
+lowest_feature_resolution: 4
+depth_unet_channels: 128
+grid_sample_disable_cudnn: false
+local_mv_match: 2
+
+# Color branch
+gaussian_regressor_channels: 512
+
+# Depth supervision and output
+supervise_intermediate_depth: true
+return_depth: true
+sample_log_depth: true
+bilinear_upsample_depth: false
+no_upsample_depth: false
+
+# Monodepth backbone
+monodepth_vit_type: vitb
+
+# Point Transformer (init)
+attn_proj_channels: 64
+knn_samples: 16
+num_blocks: 6
+init_use_local_knn: false
+init_local_knn_spatial_radius: 3
+init_local_knn_num_neighbor_views: 32
+init_local_knn_cross_view_radius: 3
+
+# Latent Gaussians
+latent_downsample: 4
+fixed_latent_size: true
+
+# Multiple Gaussians per point
+init_gaussian_multiple: 1
+refine_same_num_points: false
+
+# Handle high resolution images
+depth_pred_half_res: false
+no_crop_image: false
+
+# Iterative refinement
+num_refine: 0
+train_min_refine: 0
+train_max_refine: 0
+num_basic_refine_blocks: 4
+
+# Refinement state
+state_channels: 512
+
+# Refinement update module
+update_attn_proj_channels: 64
+refine_knn_samples: 8
+refine_use_local_knn: false
+refine_local_knn_spatial_radius: 3
+refine_local_knn_num_neighbor_views: 32
+refine_local_knn_cross_view_radius: 3
+
+# Render error multi-view attention
+render_error_mv_attn_blocks: 1
+
+# AMP
+use_amp: true
+pt_head_amp: true
+pt_update_amp: true
+
+# Checkpointing
+use_checkpointing: false
+init_use_checkpointing: false
+recurrent_use_checkpointing: false
